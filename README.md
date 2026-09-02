@@ -7,7 +7,7 @@ including a one-click switch that sends everything you do through the Tor
 network. You choose how private you want to be, and you can change your mind at
 any time without reinstalling.
 
-**Latest version: 0.9.3.6** —
+**Latest version: 0.9.3.7** —
 [Download](https://github.com/ChaotixG/Void-Os/releases/latest)
 
 ---
@@ -154,19 +154,19 @@ checks it for you and just tells you whether it passed.
 **Linux**
 
 ```sh
-sha256sum -c voidOS-x86_64-lean-0.9.3.6.iso.sha256
+sha256sum -c voidOS-x86_64-lean-0.9.3.7.iso.sha256
 ```
 
 **macOS**
 
 ```sh
-shasum -a 256 -c voidOS-x86_64-lean-0.9.3.6.iso.sha256
+shasum -a 256 -c voidOS-x86_64-lean-0.9.3.7.iso.sha256
 ```
 
 **Windows** — open PowerShell in that folder and paste both lines:
 
 ```powershell
-$f = "voidOS-x86_64-lean-0.9.3.6.iso"
+$f = "voidOS-x86_64-lean-0.9.3.7.iso"
 if ((Get-FileHash $f -Algorithm SHA256).Hash -eq (Get-Content "$f.sha256").Split(" ")[0]) { "OK" } else { "FAILED" }
 ```
 
