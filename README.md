@@ -30,6 +30,7 @@ any time without reinstalling.
 - [If an update goes wrong](#if-an-update-goes-wrong)
 - [Everyday use](#everyday-use)
 - [Useful commands](#useful-commands)
+- [Full guide: commands, shortcuts and installing apps](USING.md)
 - [Making it yours](#making-it-yours)
 - [Known issues](#known-issues)
 - [What VoidOS does not promise](#what-voidos-does-not-promise)
@@ -247,6 +248,9 @@ on, as you would expect.
 
 You never need the terminal for normal use. These exist if you like it.
 
+**→ [USING.md](USING.md) is the full guide** — every command with its
+subcommands, all 26 keyboard shortcuts, and how to install applications.
+
 | Command | What it does |
 |---|---|
 | `void-settings` | Open Settings |
@@ -335,13 +339,23 @@ customisation. If you do edit system files and something behaves oddly after an
 update, undo your edit first before reporting a bug. Detection for this is
 planned.
 
-### There is no app installer yet
+### The firewall cannot be managed per application
 
-**What happens:** VoidOS comes with a fixed set of applications and there is no
-built-in way to browse and install more.
+**What happens:** the Firewall screen can switch how traffic is routed, but there
+is no way to say "let this application reach the network, block that one".
 
-**What to do:** use what is included for now. A proper Apps screen, and a way to
-install tools during a session, are both planned.
+**What to do:** the protection that matters most — the privacy level you choose —
+works fully. Per-application control is planned.
+
+### There is no app *browser* yet
+
+**What happens:** you can install anything, but you cannot browse for it here.
+The graphical catalogue in Settings → Apps offers only three applications and has
+no search box.
+
+**What to do:** find what you want on [flathub.org](https://flathub.org), then
+install it by name — `flatpak install flathub <id>`. Full instructions in
+[USING.md](USING.md). A proper Apps screen is planned.
 
 ### Some hardware is not supported
 
@@ -411,9 +425,9 @@ Rough order, not fixed dates. Things move when something turns out to matter mor
 | **Next** | Repair and reinstall — recover a damaged system without losing your data |
 | **0.9.3.15** | Tor connection settings — bridges and transports, so Tor works on networks that block it |
 | **0.9.4** | Housekeeping and cleanup |
-| **0.9.10** | Apps — browse and install applications |
-| **0.9.15** | Window management — alt-tab, workspaces, and snapping windows to screen edges |
-| **0.9.20** | A better flow for finding and managing applications |
+| **0.9.10** | Apps — browse, install and manage applications, in one place |
+| **0.9.20** | Firewall — decide what each application is allowed to reach |
+| **0.9.30** | Window management — alt-tab, workspaces, and snapping windows to screen edges |
 | **0.9.50** | Performance — boot time, memory use and responsiveness, measured before and after |
 
 Also planned, not yet scheduled:
