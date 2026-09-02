@@ -1,0 +1,158 @@
+VoidOS License
+Copyright (c) 2026 The VoidOS Project. All rights reserved.
+
+"The VoidOS Project" means the author and copyright holder of the VoidOS
+Original Works described in Section 1. Copyright subsists in those works whether
+or not the holder is named here; nothing in this License waives it, and the
+holder may identify themselves at any time in order to enforce it.
+
+IMPORTANT: VoidOS images are an aggregation. They contain both VoidOS Original
+Works (Section 1) and a large amount of independently licensed third-party
+software (Section 5). These terms govern ONLY the VoidOS Original Works. They
+place no restriction whatsoever on the third-party software, which continues to
+carry the rights its own licenses grant you.
+
+
+1. VOIDOS ORIGINAL WORKS
+
+"VoidOS Original Works" means the material authored by the VoidOS Project,
+including:
+
+  (a) the VoidOS applications and daemons (void-panel, void-settings,
+      void-power, void-update, void-disks, void-wizard, void-installer,
+      void-shutdown-ui and the other void-* components);
+  (b) the VoidOS build system, phase scripts, packaging definitions and
+      verification invariants;
+  (c) the VoidOS theme, stylesheets, artwork and documentation;
+  (d) the VoidOS name, logo and visual identity (see Section 6).
+
+It does NOT mean the third-party software described in Section 5, even where
+that software has been configured, patched or packaged by the VoidOS Project.
+
+
+2. WHAT YOU MAY DO
+
+You may, at no charge:
+
+  (a) install and run VoidOS on any number of devices you own or control, for
+      any purpose, personal or commercial;
+  (b) modify VoidOS on your own devices, to any extent, for your own use —
+      including editing configuration, replacing components, and building a
+      modified image for yourself;
+  (c) redistribute an OFFICIAL, UNMODIFIED VoidOS image, provided it is
+      bit-for-bit identical to a release published by the VoidOS Project, is
+      accompanied by this License, and retains all notices, signatures and
+      checksums intact;
+  (d) study the VoidOS Original Works where they are published, and discuss,
+      review, report issues in, and publish analysis of them.
+
+
+3. WHAT YOU MAY NOT DO
+
+Except as Section 5 permits for third-party software, you may not:
+
+  (a) distribute a modified VoidOS image, or any image derived from VoidOS, to
+      any third party;
+  (b) distribute the VoidOS Original Works, in source or binary form, separately
+      from an official unmodified image;
+  (c) sell, sublicense, rent or offer VoidOS as a paid product or paid service;
+  (d) remove, alter or obscure any copyright notice, license text, signature or
+      integrity check;
+  (e) represent a modified system as being VoidOS, or as endorsed by, verified
+      by, or originating from the VoidOS Project.
+
+Clause (a) restricts DISTRIBUTION only. Modifying your own device is expressly
+permitted by Section 2(b) and nothing here limits it.
+
+
+4. INTEGRITY
+
+VoidOS publishes a SHA-256 checksum and a cryptographic signature for each
+release, and the operating system verifies them before applying an update.
+Circumventing, disabling or falsifying these mechanisms in a copy you
+distribute to others is prohibited. Disabling them on your own device is your
+choice and your risk.
+
+
+5. THIRD-PARTY SOFTWARE — YOUR RIGHTS ARE NOT RESTRICTED HERE
+
+A VoidOS image contains a large body of independently licensed software,
+including the Linux kernel, the GNU C Library, GNU Bash and coreutils, GTK,
+wlroots, labwc, Tor and many others. That software is licensed by its own
+authors under its own terms, which include the GNU General Public License, the
+GNU Lesser General Public License, and various permissive licenses.
+
+For the avoidance of doubt:
+
+  (a) This License does not modify, supersede, or add any condition to the
+      license of any third-party component.
+  (b) Nothing in Section 3 restricts any right granted to you by the license of
+      a third-party component. Where a third-party license permits you to copy,
+      modify or redistribute that component, you may do so, and Section 3 does
+      not apply to that act.
+  (c) If any term of this License conflicts with the license of a third-party
+      component, the third-party license prevails as to that component.
+  (d) Copyleft-licensed components carry an obligation to provide corresponding
+      source. See SOURCE.md for how to obtain it.
+
+This section exists because imposing further restrictions on copyleft software
+would violate its license. It is not a formality.
+
+
+6. NAME AND BRANDING
+
+"VoidOS", the VoidOS logo and the VoidOS visual identity are used as unregistered
+marks of the VoidOS Project. No trademark registration is claimed, and nothing
+here asserts a registered right.
+
+Instead, the following is a CONDITION OF THIS LICENSE. Your permission under
+Section 2 to use the VoidOS Original Works depends on observing it:
+
+  (a) You may use the name nominatively — to state accurately that something
+      runs on, is compatible with, is derived from, or interoperates with
+      VoidOS. Saying "built on VoidOS" or "tested on VoidOS" is fine.
+
+  (b) You may not name a modified system "VoidOS", use the VoidOS logo or visual
+      identity for it, or present it as being VoidOS or as approved, verified or
+      published by the VoidOS Project.
+
+Condition (b) rests on this License and on your need for permission to use the
+VoidOS Original Works — not on trademark law. If you build a system using only
+third-party components under their own licenses (Section 5), this License does
+not govern that system; but you would also not be shipping the VoidOS desktop,
+theme or applications, which are what make an image VoidOS.
+
+
+7. NO WARRANTY
+
+VOIDOS IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+VoidOS includes security and privacy features. No such feature is perfect, and
+none is a guarantee of anonymity or safety. Do not rely on VoidOS where failure
+would put you at risk of harm.
+
+
+8. LIMITATION OF LIABILITY
+
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH VOIDOS OR THE USE OR OTHER DEALINGS
+IN VOIDOS.
+
+
+9. RESERVATION OF RIGHTS
+
+All rights not expressly granted are reserved. VoidOS is currently provided free
+of charge; the VoidOS Project may offer future versions under different or
+commercial terms. Any such change applies only to versions released after it,
+and does not affect your rights in a version you already received.
+
+
+10. TERMINATION
+
+Your rights under Section 2 end automatically if you breach Section 3 or
+Section 6, and are restored if you cease the breach and it is not repeated.
+Termination of your rights under this License does not affect any right you hold
+under a third-party component's own license.
