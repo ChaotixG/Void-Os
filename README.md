@@ -196,6 +196,13 @@ open the installer from the desktop and follow it through.
 The installer can encrypt your disk. Take that option unless you have a reason
 not to, and choose a passphrase you will not forget — **it cannot be recovered.**
 
+**Then do one more thing.** Once you have booted the installed system, back up
+your encryption header to a USB stick. The header is a few megabytes at the start
+of the disk that your passphrase unlocks; if it is ever damaged, the disk is
+unrecoverable and the correct passphrase cannot help. It takes seconds, and it is
+the one backup that cannot be made after the fact —
+[how to do it](USING.md#disk-encryption-backup-and-recovery).
+
 VoidOS runs on 64-bit PCs, and boots on both modern (UEFI) and older (BIOS)
 machines.
 

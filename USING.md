@@ -33,6 +33,7 @@ want.
   - [Updates and recovery](#updates-and-recovery)
   - [Disks and network](#disks-and-network)
   - [Security and troubleshooting](#security-and-troubleshooting)
+- [Disk encryption: backup and recovery](#disk-encryption-backup-and-recovery)
 - [Getting out of trouble](#getting-out-of-trouble)
 
 ---
@@ -249,7 +250,7 @@ progress bar.
 |---|---|
 | `void-disk` | Disk helper used by the Disks application |
 | `void-network` | Network helper used by Settings |
-| `voidos-luks-backup` | Back up your disk-encryption header. Worth doing — if that header is damaged the disk is unrecoverable, even with the right passphrase |
+| `voidos-luks-backup save <device> <folder>` | Back up your disk-encryption header. See [Disk encryption](#disk-encryption-backup-and-recovery) — this is the one backup that cannot be replaced later |
 
 ### Security and troubleshooting
 
@@ -261,6 +262,82 @@ progress bar.
 | `voidos-build` | Install software from source (see above) |
 
 Most `voidos-confine` subcommands need `sudo`.
+
+---
+
+## Disk encryption: backup and recovery
+
+If you chose an encrypted disk, read this once now — not when you need it.
+
+### Why this matters more than a normal backup
+
+Your disk is unlocked by a **header** stored at the start of it. That header
+holds your key, wrapped by your passphrase. If those few megabytes are damaged —
+a bad sector, an interrupted write, a mistyped command aimed at the wrong device
+— **the disk is gone.** Not difficult to recover: gone. The correct passphrase
+cannot help, because the thing it unlocks no longer exists.
+
+A header backup is the only defence. It takes seconds.
+
+### Making the backup
+
+Plug in a USB stick, and:
+
+```sh
+sudo voidos-luks-backup save /dev/sda2 /run/media/you/STICK
+```
+
+Use the partition that holds the encryption, not the whole disk. `lsblk -f` shows
+which one says `crypto_LUKS`.
+
+It prints where it saved the file and its checksum. Keep both.
+
+Three things it will tell you, and all three matter:
+
+- **It refuses to write the backup onto the disk it protects.** A header backup
+  stored on the encrypted disk protects nothing.
+- **If your USB stick is FAT or exFAT it warns you and asks for confirmation**,
+  because those filesystems have no permissions — the file would be readable by
+  anyone who picks the stick up.
+- **The backup contains your key slots.** Anyone holding this file *and* a
+  passphrase that was valid when it was made can decrypt the disk — including a
+  passphrase you revoke later. Store it offline, treat it like the disk itself.
+
+To see what is currently on a device: `sudo voidos-luks-backup show /dev/sda2`.
+
+### Restoring after a damaged header
+
+**You cannot do this from the broken machine** — it will not boot. You need the
+VoidOS USB stick you installed from, or any live Linux.
+
+1. Boot the **live USB**, not the installed system.
+2. Plug in the medium holding your header backup.
+3. Make sure the encrypted volume is **not unlocked**. If you were prompted for
+   your passphrase and entered it, restart and skip the prompt. Restoring a
+   header underneath an unlocked volume leaves it permanently unopenable — the
+   tool refuses to do it, and that refusal is protecting you.
+4. Restore:
+
+```sh
+sudo voidos-luks-backup restore /dev/sda2 /path/to/voidos-luks-header-sda2-TIMESTAMP.img
+```
+
+It will state what it is about to overwrite and ask you to type `RESTORE`. Then
+restart normally and unlock with your passphrase.
+
+### The two ways this goes wrong
+
+**Restoring a header from a different disk destroys everything on the target,
+permanently.** The header carries the key for *its* disk; put it on another one
+and every byte becomes unreadable, with no recovery. The tool records which
+volume each backup belongs to and refuses a mismatch — which is why you should
+keep the small `.uuid` file saved alongside the backup. If it cannot check, it
+says so, and you should stop and be certain.
+
+**Your passphrase goes back in time.** The restored header is the one from the
+day you made it. Any passphrase you added *since* will not work, and any
+passphrase you removed since **will work again**. If you changed your passphrase,
+make a fresh backup and destroy the old one.
 
 ---
 
@@ -277,5 +354,7 @@ will not start at all, it goes back on its own.
 
 **Something is frozen.** Hold the power button for about five seconds.
 
-**You want to check your disk-encryption backup exists.** `voidos-luks-backup`.
-Keep the result somewhere that is not the encrypted disk.
+**You want to check your disk-encryption backup.** `sudo voidos-luks-backup show
+/dev/sda2` prints what is on the device now. Making a backup, and restoring one
+after damage, are covered in
+[Disk encryption](#disk-encryption-backup-and-recovery).
