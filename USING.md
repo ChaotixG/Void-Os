@@ -18,6 +18,7 @@ want.
   - [Managing what you installed](#managing-what-you-installed)
   - [Where applications may read and write](#where-applications-may-read-and-write)
   - [Building from source](#building-from-source-advanced)
+- [Installing VoidOS onto another drive](#installing-voidos-onto-another-drive)
 - [Keyboard shortcuts](#keyboard-shortcuts)
   - [Opening things](#opening-things)
   - [Windows](#windows)
@@ -126,6 +127,41 @@ set up it will warn you first, because anything built would be lost at restart.
 
 ---
 
+## Installing VoidOS onto another drive
+
+You do not need the live USB to install VoidOS again. From the system you are
+already running, you can install it onto a **different** drive — a USB stick you
+want to carry with you, or a second internal disk.
+
+Tap **Super**, type **Install VoidOS**, and open it.
+
+**It installs the version you are running.** Nothing is downloaded, and you
+cannot end up with a version older or newer than the one you are sitting in
+front of.
+
+**The drive you are running from is never offered.** It does not appear in the
+list at all, so there is no way to pick it by mistake and no way to wipe the
+system you are using.
+
+**Everything on the drive you choose is erased.** Before anything is written,
+the installer asks you to type the name of the drive you picked, exactly as it
+is shown on screen. Nothing starts until you do, so a mis-click or a stray Enter
+cannot begin an install.
+
+**A computer can hold more than one VoidOS.** Each install is complete and
+independent — its own account, its own files, its own privacy level, and its own
+updates. Which one you get depends on which drive you start the computer from.
+
+**The new install starts clean.** The first time you boot it you land on the
+normal login screen and sign in with the account you created in the installer.
+It is a fresh system, not a copy of the one you installed from.
+
+Installing onto a second internal disk is a perfectly reasonable thing to do.
+Just remember it is erased like any other drive — look at what is on it before
+you choose it.
+
+---
+
 ## Keyboard shortcuts
 
 **Super** is the Windows key.
@@ -208,7 +244,7 @@ You never need these for normal use. They exist when you want them.
 | `void-monitor` | System Monitor |
 | `void-disks` | Disks |
 | `void-firewall` | Firewall |
-| `void-installer` | Install VoidOS to this machine |
+| `void-installer` | Install VoidOS onto another drive — never the one you are running from |
 
 ### Screen and session
 

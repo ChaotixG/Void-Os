@@ -7,7 +7,7 @@ including a one-click switch that sends everything you do through the Tor
 network. You choose how private you want to be, and you can change your mind at
 any time without reinstalling.
 
-**Latest version: 0.9.3.7** —
+**Latest version: 0.9.3.9** —
 [Download](https://github.com/ChaotixG/Void-Os/releases/latest)
 
 ---
@@ -154,19 +154,19 @@ checks it for you and just tells you whether it passed.
 **Linux**
 
 ```sh
-sha256sum -c voidOS-x86_64-lean-0.9.3.7.iso.sha256
+sha256sum -c voidOS-x86_64-lean-0.9.3.9.iso.sha256
 ```
 
 **macOS**
 
 ```sh
-shasum -a 256 -c voidOS-x86_64-lean-0.9.3.7.iso.sha256
+shasum -a 256 -c voidOS-x86_64-lean-0.9.3.9.iso.sha256
 ```
 
 **Windows** — open PowerShell in that folder and paste both lines:
 
 ```powershell
-$f = "voidOS-x86_64-lean-0.9.3.7.iso"
+$f = "voidOS-x86_64-lean-0.9.3.9.iso"
 if ((Get-FileHash $f -Algorithm SHA256).Hash -eq (Get-Content "$f.sha256").Split(" ")[0]) { "OK" } else { "FAILED" }
 ```
 
@@ -193,15 +193,33 @@ VoidOS starts as a live session, so you can look around and check your Wi-Fi and
 screen work **before** changing anything on your computer. When you are happy,
 open the installer from the desktop and follow it through.
 
-The installer can encrypt your disk. Take that option unless you have a reason
-not to, and choose a passphrase you will not forget — **it cannot be recovered.**
+The installer asks how you want your disk protected, and offers three choices.
 
-**Then do one more thing.** Once you have booted the installed system, back up
-your encryption header to a USB stick. The header is a few megabytes at the start
-of the disk that your passphrase unlocks; if it is ever damaged, the disk is
-unrecoverable and the correct passphrase cannot help. It takes seconds, and it is
-the one backup that cannot be made after the fact —
+- **Passphrase** — recommended, and what the installer picks for you. Your disk
+  is encrypted, and you type a passphrase every time the computer starts. Choose
+  one you will not forget — **it cannot be recovered.**
+- **Automatic unlock** — your disk is still encrypted, but a key kept on the
+  computer unlocks it for you, so there is no passphrase to type at start-up. Be
+  clear about what that is worth. It does **not** protect you if someone takes
+  the whole computer, because the key goes with it. What it does do is keep your
+  data unreadable if the storage is taken out and read on another machine.
+  Available at the Daily and Secure privacy levels; not offered at Maximum.
+- **No encryption** — nothing on the disk is protected. This is only offered
+  when you have chosen the Daily privacy level; it cannot be combined with Secure
+  or Maximum.
+
+**If your disk is encrypted — either of the first two choices — then do one
+more thing.** Once you have booted the installed system, back up your encryption
+header to a USB stick. The header is a few megabytes at the start of the disk
+that unlocks it; if it is ever damaged, the disk is unrecoverable and even the
+correct passphrase cannot help. It takes seconds, and it is the one backup that
+cannot be made after the fact —
 [how to do it](USING.md#disk-encryption-backup-and-recovery).
+
+Already running VoidOS and want it on another drive — a USB stick, or a second
+internal disk? You can install straight from the system you are using, without a
+live USB: see
+[Installing VoidOS onto another drive](USING.md#installing-voidos-onto-another-drive).
 
 VoidOS runs on 64-bit PCs, and boots on both modern (UEFI) and older (BIOS)
 machines.
@@ -265,7 +283,7 @@ subcommands, all 26 keyboard shortcuts, and how to install applications.
 | `void-monitor` | See what is running |
 | `void-firewall` | Network permissions |
 | `void-update` | Check for and install updates |
-| `void-installer` | Install VoidOS to this computer |
+| `void-installer` | Install VoidOS onto another drive — never the one you are running from |
 | `voidos-lock` | Lock the screen now |
 | `voidos-theme` | Re-apply your appearance settings |
 | `voidos-keyboard` | Keyboard layout |
