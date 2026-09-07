@@ -7,7 +7,7 @@ including a one-click switch that sends everything you do through the Tor
 network. You choose how private you want to be, and you can change your mind at
 any time without reinstalling.
 
-**Latest version: 0.9.3.9** —
+**Latest version: 0.9.3.10** —
 [Download](https://github.com/ChaotixG/Void-Os/releases/latest)
 
 ---
@@ -15,6 +15,7 @@ any time without reinstalling.
 ## Contents
 
 - [Who it's for](#who-its-for)
+- [New in 0.9.3.10](#new-in-09310)
 - [What's included](#whats-included)
 - [Privacy levels](#privacy-levels)
   - [Daily](#daily)
@@ -34,7 +35,7 @@ any time without reinstalling.
 - [Making it yours](#making-it-yours)
 - [Known issues](#known-issues)
 - [What VoidOS does not promise](#what-voidos-does-not-promise)
-- [Coming soon](#coming-soon)
+- [Reinstalling without losing your files](#reinstalling-without-losing-your-files)
 - [Planned releases](#planned-releases)
 - [Getting help](#getting-help)
 - [Licence](#licence)
@@ -50,6 +51,74 @@ follow four steps with a USB stick, you can run VoidOS.
 It is a good fit if you want to browse without being tracked, keep your files
 encrypted, or work on something sensitive. It is also fine as an everyday
 machine — you can watch video, play music, write documents and browse the web.
+
+---
+
+## New in 0.9.3.10
+
+Each of these has a fuller explanation in [USING.md](USING.md).
+
+- **Command-line tools, installed into the machine you are already using.**
+  `void-get` fetches a tool from a signed list and puts it in place — no
+  rebuild, no reinstall. A tool is either **ready-made** (downloaded and placed,
+  seconds) or **built here** (compiled through pkgsrc, minutes to hours); the
+  list says which, and you do not choose. Where it lands is your privacy level's
+  decision: Daily keeps it, Secure asks you each time, and Maximum installs it
+  into memory for the session only. Also in **Settings → Apps → Get tools**.
+  [Getting tools](USING.md#getting-tools)
+- **Every command explains itself.** `voidos help` lists every VoidOS command
+  there is, grouped by what it is for. `voidos help <command>` — or
+  `<command> help` — gives one command's own help: what it does, every option,
+  every file it touches, and what each exit code means. `void` is a shorter name
+  for the same thing. Asking for help never does anything.
+  [Getting help on the command line](USING.md#getting-help-on-the-command-line)
+- **One USB stick is enough.** A persistence volume can now go in the stick's
+  own free space, after the image, without disturbing it. The stick still boots
+  on both BIOS and UEFI machines and the image is untouched.
+  [How big a USB stick](USING.md#how-big-a-usb-stick)
+- **Your account is remembered on a stick.** Set up an account once on a stick
+  with persistence and later boots go straight to the login screen. Setup runs
+  once, not every time. On *Maximum* nothing is restored, by design.
+  [How big a USB stick](USING.md#how-big-a-usb-stick)
+- **Maximum forgets on an installed disk too.** An installed machine set to
+  *Maximum* boots amnesic — no accounts, files, keyring or saved networks in the
+  session — with only the tools you installed brought across, read-only. The
+  live menu gains a matching entry, **Maximum with Persistence (tools only)**.
+  [What a Maximum session carries](USING.md#what-a-maximum-session-carries)
+- **Encrypted scratch space, and memory pressure handled before something
+  dies.** Where there is persistent storage, overflow memory goes to a disk area
+  encrypted with a random key that only ever exists in RAM. Separately,
+  `void-psi` throttles a runaway application, then asks it to close, then forces
+  it — telling you which and why, and never touching the desktop, the system
+  services or Tor. [Memory and scratch space](USING.md#memory-and-scratch-space)
+- **Repair.** **Settings → Update → Recovery** now says what is actually wrong
+  with the system, one line per check, and puts back what it can from the copy
+  of VoidOS you are running. [Repair](USING.md#repair)
+- **Kernel updates that keep their slot, and put themselves right.** From the
+  first update this version makes, each system copy keeps its own kernel and
+  startup image, named for the version it holds and stored with a signature, so
+  an update cannot overwrite the other copy's kernel and going back always finds
+  the one it was built with. A machine that arrived here from 0.9.3.9 boots once
+  on the old startup image, and the step that confirms a good boot brings it up
+  to date by itself — nothing to run, nothing to repair by hand.
+  [The first boot after upgrading from 0.9.3.9](USING.md#the-first-boot-after-upgrading-from-0939)
+- **Drive and stick sizes are guidance, not a limit.** The installer refuses
+  only a drive the system physically will not fit on, says exactly how much
+  space that would take, and otherwise tells you what a small drive will cost
+  before it touches anything.
+  [How big a drive to install onto](USING.md#how-big-a-drive-to-install-onto)
+- **Updates no longer depend on how much memory you have.** An installed system
+  now stages the download on the persistent volume instead of in memory. If you
+  are coming from 0.9.3.9 on a machine with 3 GB of RAM or less, that older
+  updater will refuse this update with *"not enough space to stage the update"*
+  and change nothing; install it by booting the 0.9.3.10 stick and choosing the
+  reinstall that keeps your files.
+  [Updating from 0.9.3.9 on a machine with 3 GB of RAM](USING.md#updating-from-0939-on-a-machine-with-3-gb-of-ram)
+- **Installing and setting up leave a record.** The installer writes
+  `/run/voidos/install.log` and creating a persistence volume writes
+  `/run/voidos/persist-create.log` — both readable by administrators only, both
+  in memory and gone at shutdown, and neither ever contains a passphrase.
+  [Security and troubleshooting](USING.md#security-and-troubleshooting)
 
 ---
 
@@ -86,7 +155,7 @@ You can find them in **Settings → Security profile**.
 
 ### Daily
 
-**Normal networking. The most convenient.**
+**Normal networking. The most convenient. This is the default.**
 
 Your internet connection works the way it does on any other computer. Websites
 and services see your real connection, exactly as they would on Windows or a Mac.
@@ -154,19 +223,19 @@ checks it for you and just tells you whether it passed.
 **Linux**
 
 ```sh
-sha256sum -c voidOS-x86_64-lean-0.9.3.9.iso.sha256
+sha256sum -c voidOS-x86_64-lean-0.9.3.10.iso.sha256
 ```
 
 **macOS**
 
 ```sh
-shasum -a 256 -c voidOS-x86_64-lean-0.9.3.9.iso.sha256
+shasum -a 256 -c voidOS-x86_64-lean-0.9.3.10.iso.sha256
 ```
 
 **Windows** — open PowerShell in that folder and paste both lines:
 
 ```powershell
-$f = "voidOS-x86_64-lean-0.9.3.9.iso"
+$f = "voidOS-x86_64-lean-0.9.3.10.iso"
 if ((Get-FileHash $f -Algorithm SHA256).Hash -eq (Get-Content "$f.sha256").Split(" ")[0]) { "OK" } else { "FAILED" }
 ```
 
@@ -178,7 +247,17 @@ would not find out until the install failed partway through.
 
 ### 3. Put it on a USB stick
 
-Use any USB stick of 4 GB or more. Writing to it erases everything on it.
+**4 GB** or more runs VoidOS from the stick. To also keep a **persistence
+volume** — your files, your settings, your account and the tools and
+applications you install — use **6 GB at the very least, and 8 GB or more for
+room to work in**. The volume goes in the stick's own free space, after the
+image, so one stick does both. Writing the image to the stick erases everything
+on it.
+
+A stick is not updated in place: you update it by writing the new image to it,
+exactly as you wrote the first one, and **your persistence volume is kept** —
+it is a separate partition and the new system finds it as before. See
+[How big a USB stick](USING.md#how-big-a-usb-stick).
 
 - **Easiest:** [Ventoy](https://www.ventoy.net) — set it up once, then simply
   copy `.iso` files onto the stick like ordinary files.
@@ -203,10 +282,13 @@ The installer asks how you want your disk protected, and offers three choices.
   clear about what that is worth. It does **not** protect you if someone takes
   the whole computer, because the key goes with it. What it does do is keep your
   data unreadable if the storage is taken out and read on another machine.
-  Available at the Daily and Secure privacy levels; not offered at Maximum.
-- **No encryption** — nothing on the disk is protected. This is only offered
-  when you have chosen the Daily privacy level; it cannot be combined with Secure
-  or Maximum.
+- **No encryption** — nothing on the disk is encrypted. Anyone who can read the
+  drive can read your files, including someone who simply takes the machine.
+
+This choice is about the disk only. It is independent of the privacy level:
+Secure and Maximum behave exactly the same on an unencrypted disk — what they
+protect is what the running system does, and what encryption protects is what
+sits on the disk when it is off. Pick each on its own merits.
 
 **If your disk is encrypted — either of the first two choices — then do one
 more thing.** Once you have booted the installed system, back up your encryption
@@ -215,6 +297,14 @@ that unlocks it; if it is ever damaged, the disk is unrecoverable and even the
 correct passphrase cannot help. It takes seconds, and it is the one backup that
 cannot be made after the fact —
 [how to do it](USING.md#disk-encryption-backup-and-recovery).
+
+**How big a drive.** These are guidance and not limits: the installer refuses
+only a drive the smallest layout physically will not fit on — a little over
+**6 GB** with the current image — and names the exact figure it needed. Under
+**8 GB** it warns that updates will not fit and application installs will be
+limited; between **8 and 10 GB** that downloads will be limited; above **10 GB**
+it says nothing, because there is nothing to say. See
+[How big a drive to install onto](USING.md#how-big-a-drive-to-install-onto).
 
 Already running VoidOS and want it on another drive — a USB stick, or a second
 internal disk? You can install straight from the system you are using, without a
@@ -240,13 +330,27 @@ They sit outside the system copies and are left exactly as they are.
 
 ## If an update goes wrong
 
-You have two safety nets.
+You have three safety nets.
 
 1. **It fixes itself.** If a new version fails to start, your computer notices and
    goes back to the previous one on its own. You do not have to do anything.
 2. **You change your mind.** Go to **Settings → Update → Roll back**. The
    previous version is still on the disk, so nothing is downloaded and it only
    takes a restart.
+3. **You want to know what is actually wrong.** Go to **Settings → Update →
+   Recovery → Check this system**. It looks at the system itself — the copy your
+   computer is running, the parts it starts from, the boot menu, and the backup
+   of your disk's encryption header — and tells you which of them is not what it
+   should be. Checking changes nothing.
+
+   If something is wrong, **Repair** puts back what it can, from the copy of
+   VoidOS your computer is already running. Anything it cannot fix from there —
+   a damaged copy of the system itself, or the volume your files live on while
+   you are using it — it says so and tells you what to do instead, rather than
+   pretending. Your files, settings and installed applications are on a separate
+   volume and are never touched.
+
+   [What each check means](USING.md#repair).
 
 ---
 
@@ -274,15 +378,21 @@ on, as you would expect.
 You never need the terminal for normal use. These exist if you like it.
 
 **→ [USING.md](USING.md) is the full guide** — every command with its
-subcommands, all 26 keyboard shortcuts, and how to install applications.
+subcommands, every keyboard shortcut, and how to install applications.
+
+The system is also its own reference: `voidos help` lists every VoidOS command,
+and `voidos help <command>` prints one command's own help. `void` is a shorter
+name for the same thing.
 
 | Command | What it does |
 |---|---|
+| `voidos help` | Every VoidOS command there is. `voidos help <command>` for one |
 | `void-settings` | Open Settings |
 | `void-disks` | Manage drives and partitions |
 | `void-monitor` | See what is running |
 | `void-firewall` | Network permissions |
 | `void-update` | Check for and install updates |
+| `void-get` | Add command-line tools to the machine you are using |
 | `void-installer` | Install VoidOS onto another drive — never the one you are running from |
 | `voidos-lock` | Lock the screen now |
 | `voidos-theme` | Re-apply your appearance settings |
@@ -379,8 +489,9 @@ The graphical catalogue in Settings → Apps offers only three applications and 
 no search box.
 
 **What to do:** find what you want on [flathub.org](https://flathub.org), then
-install it by name — `flatpak install flathub <id>`. Full instructions in
-[USING.md](USING.md). A proper Apps screen is planned.
+install it by name — `flatpak install flathub <id>`, or `--user` for your
+account only. Full instructions in [USING.md](USING.md). A proper Apps screen
+is planned.
 
 ### Some hardware is not supported
 
@@ -427,17 +538,26 @@ any single tool — by itself.**
 
 ---
 
-## Coming soon
+## Reinstalling without losing your files
 
-The next release focuses on repair and recovery:
+If a machine already has VoidOS on it, the installer offers to **keep your
+files and reinstall the system**, and that is the default. Your account,
+settings, installed applications and files stay exactly where they are; the
+system side is rewritten from the VoidOS you booted, and disk protection stays
+as it was. An encrypted disk asks for its passphrase first, or unlocks by its
+key if that is how it was set up. **Fresh install** is still there and still
+erases everything, but you have to choose it.
 
-- **Repair** — check the system against the official release and put right
-  anything that is damaged, without touching your files, settings or installed
-  applications.
-- **Reinstall** — return the system side of your machine to factory condition
-  while keeping everything of yours. Useful if you have broken something, or want
-  to be certain nothing unwanted is left behind. It asks for confirmation first
-  and tells you exactly what you will lose.
+Since 0.9.3.10 the installer also keeps a copy of the disk's encryption header
+on the boot partition, and every start checks the header before asking for the
+passphrase: a damaged one is put back from the copy. It covers a bad sector or
+a stray write over the start of the encrypted partition; it does not replace
+the off-machine backup, and it cannot recover a lost passphrase.
+
+If a reinstall is not what you need, **Repair** is the smaller answer:
+**Settings → Update → Recovery** checks the system, names what is damaged and
+puts back what it can from the copy you are running, without touching your
+files. See [Repair](USING.md#repair).
 
 ---
 
@@ -447,7 +567,6 @@ Rough order, not fixed dates. Things move when something turns out to matter mor
 
 | Version | What it brings |
 |---|---|
-| **Next** | Repair and reinstall — recover a damaged system without losing your data |
 | **0.9.3.15** | Tor connection settings — bridges and transports, so Tor works on networks that block it |
 | **0.9.4** | Housekeeping and cleanup |
 | **0.9.10** | Apps — browse, install and manage applications, in one place |
@@ -458,8 +577,6 @@ Rough order, not fixed dates. Things move when something turns out to matter mor
 Also planned, not yet scheduled:
 
 - **Gaming** — getting Steam working; a main use case for the project
-- **Installing tools during a session** — add what you need without rebuilding
-  or reinstalling
 - **Making the lid-close setting actually work**
 
 Progress happens in the open — see
