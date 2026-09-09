@@ -7,7 +7,7 @@ including a one-click switch that sends everything you do through the Tor
 network. You choose how private you want to be, and you can change your mind at
 any time without reinstalling.
 
-**Latest version: 0.9.3.10** —
+**Latest version: 0.9.3.11** —
 [Download](https://github.com/ChaotixG/Void-Os/releases/latest)
 
 ---
@@ -15,6 +15,7 @@ any time without reinstalling.
 ## Contents
 
 - [Who it's for](#who-its-for)
+- [New in 0.9.3.11](#new-in-09311)
 - [New in 0.9.3.10](#new-in-09310)
 - [What's included](#whats-included)
 - [Privacy levels](#privacy-levels)
@@ -54,9 +55,63 @@ machine — you can watch video, play music, write documents and browse the web.
 
 ---
 
+## New in 0.9.3.11
+
+A small release, about a live stick keeping what you tell it.
+
+- **Your settings survive a reboot on a stick with a persistence volume.** They
+  used to be kept in memory and quietly return to their defaults every time. The
+  tool channel, whether updates are checked automatically, the firewall's network
+  mode, the confinement mode, hardware-address randomisation, power mode, charge
+  limit, lid action, screen brightness, keyboard layout and per-app device
+  permissions are all now written to the volume on *Daily* and *Secure*. Your
+  privacy level is deliberately **not** among them: on a stick the boot menu
+  entry you pick decides it, every time. **Settings → Storage & persistence**
+  says which of the two states this session is in rather than leaving you to find
+  out at the next boot. [Settings on a live stick](USING.md#settings-on-a-live-stick)
+- **A password you change is saved within seconds.** Changing it with `passwd` —
+  which is what **Settings → Accounts → Change password** runs — used to reach the
+  volume only at a clean shutdown, so a stick that lost power came back with the
+  old password. It is now recorded a few seconds after the change.
+  [Changing your password](USING.md#changing-your-password)
+- **Making someone an administrator now takes effect everywhere, and a stick
+  cannot lock you out.** Granting or revoking administrator in **Settings →
+  Accounts** also updates which account is asked for when a privacy level is
+  changed. Revoking the only administrator is refused. A stick with a persistence
+  volume now remembers all of your accounts rather than only the first, so
+  promoting a second account and demoting the first survives a reboot — and if a
+  machine ever had no administrator, VoidOS gives it back to the account you made
+  first instead of leaving a stick that can authorise nothing.
+  [Administrators](USING.md#administrators)
+- **Building tools from source is smoother.** `voidos-build` now sets itself up
+  on your first build instead of needing a separate step, you can send builds to
+  another folder with `VOIDOS_BUILD_PREFIX`, and after a build it tells you the
+  command you actually run (installing `netcat` gives you `nc`, and it says so).
+  `voidos-build search` searches names as well as descriptions and says where to
+  look when nothing matches. The full pkgsrc collection is buildable — over 700
+  security packages among them — and the wireless-auditing tools ship ready to
+  run. [Building from source](USING.md#building-from-source-advanced)
+- **Every command explains itself, and says plainly when it fails.** `voidos
+  help` lists them all and `<command> help` explains one; a command given a bad
+  argument now tells you what was wrong instead of printing its whole help. There
+  is a plain command reference in [commands.md](commands.md).
+- **Clearer words from the updater.** The update log now names the temporary
+  copies it clears from `/boot` instead of removing them silently, and rolling
+  back an update that was never started no longer reports a pending update that
+  cannot happen.
+  [Updates and recovery](USING.md#updates-and-recovery)
+
+**Updating from 0.9.3.10: there is nothing to do.** It is an ordinary update —
+staged on the disk, not in memory, and it carries its own kernel and startup
+image — so it installs and restarts like any other. **Settings → Update → Check
+now → Install**.
+
+---
+
 ## New in 0.9.3.10
 
-Each of these has a fuller explanation in [USING.md](USING.md).
+The previous release, and all still true. Each of these has a fuller
+explanation in [USING.md](USING.md).
 
 - **Command-line tools, installed into the machine you are already using.**
   `void-get` fetches a tool from a signed list and puts it in place — no
@@ -223,19 +278,19 @@ checks it for you and just tells you whether it passed.
 **Linux**
 
 ```sh
-sha256sum -c voidOS-x86_64-lean-0.9.3.10.iso.sha256
+sha256sum -c voidOS-x86_64-lean-0.9.3.11.iso.sha256
 ```
 
 **macOS**
 
 ```sh
-shasum -a 256 -c voidOS-x86_64-lean-0.9.3.10.iso.sha256
+shasum -a 256 -c voidOS-x86_64-lean-0.9.3.11.iso.sha256
 ```
 
 **Windows** — open PowerShell in that folder and paste both lines:
 
 ```powershell
-$f = "voidOS-x86_64-lean-0.9.3.10.iso"
+$f = "voidOS-x86_64-lean-0.9.3.11.iso"
 if ((Get-FileHash $f -Algorithm SHA256).Hash -eq (Get-Content "$f.sha256").Split(" ")[0]) { "OK" } else { "FAILED" }
 ```
 
@@ -377,7 +432,8 @@ on, as you would expect.
 
 You never need the terminal for normal use. These exist if you like it.
 
-**→ [USING.md](USING.md) is the full guide** — every command with its
+**→ [commands.md](commands.md)** is a plain list of the commands you can type;
+**[USING.md](USING.md) is the full guide** — every command with its
 subcommands, every keyboard shortcut, and how to install applications.
 
 The system is also its own reference: `voidos help` lists every VoidOS command,

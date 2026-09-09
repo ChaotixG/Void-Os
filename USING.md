@@ -32,6 +32,10 @@ want.
   - [How much memory a live stick needs](#how-much-memory-a-live-stick-needs)
   - [When memory runs short](#when-memory-runs-short)
   - [What a Maximum session carries](#what-a-maximum-session-carries)
+- [Accounts, settings and what a stick keeps](#accounts-settings-and-what-a-stick-keeps)
+  - [Settings on a live stick](#settings-on-a-live-stick)
+  - [Changing your password](#changing-your-password)
+  - [Administrators](#administrators)
 - [Installing VoidOS onto another drive](#installing-voidos-onto-another-drive)
 - [Reinstalling without losing your files](#reinstalling-without-losing-your-files)
 - [Updating from 0.9.3.9 on a machine with 3 GB of RAM](#updating-from-0939-on-a-machine-with-3-gb-of-ram)
@@ -137,18 +141,51 @@ Grant the narrowest thing that works. Granting `home` gives it everything.
 
 ### Building from source (advanced)
 
-`voidos-build` compiles software from source. It is slower and needs a one-time
-setup, but reaches things Flathub does not carry.
+`voidos-build` compiles software from source. It is slower than an app or a
+ready-made tool, but reaches things nothing else carries, and it resolves each
+build's own dependencies for you.
 
 ```sh
-voidos-build setup-user          # once per account, takes a while
-voidos-build search nmap
-voidos-build install net/nmap
-voidos-build list
+voidos-build search nmap         # matches names and descriptions
+voidos-build install net/nmap    # the first build sets the system up for you
+voidos-build list                # what you have built
 ```
 
-It installs into your home folder by default. If you have no persistent storage
-set up it will warn you first, because anything built would be lost at restart.
+**No separate setup step.** The build system used to need `voidos-build
+setup-user` run once first. Now the first `install` sets it up on its own; the
+`setup-user` command is still there if you would rather do it up front, and says
+"Already set up" when there is nothing to do.
+
+**It installs into your home folder by default.** To send builds somewhere else
+— a bigger volume, say — set it for one command with `VOIDOS_BUILD_PREFIX`, or
+keep the choice by putting `prefix=/path` in `~/.config/voidos/build.conf`:
+
+```sh
+VOIDOS_BUILD_PREFIX=/mnt/tools voidos-build install security/hydra
+```
+
+If you have no persistent storage set up it warns you first, because anything
+built would live in memory and be lost at restart — said before the build, not
+after.
+
+**Builds use every core**, and your own prefix builds with the same settings as
+the system one — one file, `/usr/share/voidos/pkgsrc.mk`, that both read — so a
+tool resolves the same dependencies whichever way you build it. A prefix set up
+by an earlier VoidOS gets those settings the next time you build or run
+`voidos-build setup-user`. A location on a filesystem mounted without execute
+permission, such as `/tmp`, is refused up front with the reason, not twenty
+minutes in with a compiler's error. Tools installed for your account only are on
+your PATH in a console login as well as on the desktop.
+
+**`search` tells you when nothing matches, and where to look instead**, rather
+than printing nothing. It searches package names as well as descriptions, so a
+tool whose name is not mentioned in any description is still found.
+
+The tree carries the full pkgsrc collection, including its security section —
+more than 700 packages there alone: `nmap`, `hydra`, `john`, `sqlmap`, `nikto`,
+`hashcat`, `dirb`, `gobuster` and many more are all buildable this way. The
+wireless-auditing tools (`iw`, `tcpdump`, the `aircrack-ng` suite including
+`airmon-ng`, and `hcxdumptool`) already ship in the image, ready to run.
 
 ---
 
@@ -177,6 +214,7 @@ void-get info nmap              # everything the list says about one
 void-get install jq             # install it
 void-get list                   # what you have, and where it lives
 void-get remove jq              # take it back off
+void-get upgrade                # move every tool you installed to the list's version
 ```
 
 `void-get help` is the complete reference — every command and flag with a line
@@ -269,6 +307,35 @@ The list says which each one is, and Settings shows it on the row.
 - **Builds here** — compiled on this machine from source, through the same
   pkgsrc system `voidos-build` uses. Minutes to hours, and it resolves its own
   dependencies. Worth it for things no one can ship a portable build of.
+
+When a build finishes, `void-get` tells you the command it installed, because it
+is often not the name you asked for — `void-get install netcat` builds a program
+you run as `nc`, and it says `type nc, not netcat` rather than leaving you to
+guess after an hour's compile. The commands it names are the ones the build
+actually installed, read back from it, not the list's guess.
+
+Some tools offer both. `void-get info <tool>` shows the routes it has. By
+default the ready-made one is used when it can run on your system; if it needs
+a newer glibc than yours, `void-get` says so in one line and builds from source
+instead. You can also choose:
+
+```sh
+void-get install gobuster --portable   # the ready-made program, or a plain refusal
+void-get install gobuster --build      # compile it here instead
+```
+
+### Keeping tools up to date
+
+`void-get update` only refreshes the list. To move what you installed forward:
+
+```sh
+void-get list                   # a tool that is behind shows  1.8.1 → 1.8.2
+void-get upgrade                # every tool that is behind, or name the ones you want
+```
+
+An upgrade puts the new version beside the old one and swaps them at the end,
+so if anything goes wrong the version you had keeps working. Settings › Get
+tools shows an **Update** button on a row that is behind.
 
 ### What is checked before anything is installed
 
@@ -547,6 +614,85 @@ persists as it always has.
 
 ---
 
+## Accounts, settings and what a stick keeps
+
+### Settings on a live stick
+
+On a live stick with a persistence volume, the settings the system keeps for
+itself are now written to the volume and are still set the next time you boot
+that stick. Before, they were kept in memory: the page showed the new value, and
+the next boot answered with the shipped default without saying so.
+
+What this covers:
+
+| Setting | Where you change it |
+|---|---|
+| The tool channel | `void-get channel <url>` |
+| Whether updates are checked automatically | Settings → Update |
+| The firewall's network mode | Settings → Firewall |
+| The confinement mode | Settings → Confinement |
+| Hardware-address randomisation | The **Network identity** section in Settings |
+| Power mode, charge limit, lid action | Settings → Power & battery |
+| Screen brightness | The brightness keys; put back at the next boot |
+| Keyboard layout | Setup, or `voidos-keyboard` |
+| Per-application device permissions | Settings → Apps → App permissions |
+| Your keyring | Set up at your first sign-in |
+
+**Your privacy level is deliberately not one of them.** On a stick, the boot
+menu entry you choose decides it, every time — that is what the entry is for. A
+level chosen during a live session applies to that session and is not written
+anywhere. On an installed machine the level is a recorded choice as before.
+
+**Maximum keeps none of this**, including on the *Maximum with Persistence
+(tools only)* entry. The volume is open there and this is still not read, so a
+setting stored on the volume can never loosen a Maximum session. See
+[What a Maximum session carries](#what-a-maximum-session-carries).
+
+**Settings → Storage & persistence tells you which it is.** With the volume open
+it says
+either that settings are written to the volume too, or that they are kept in
+memory only and will return to their defaults at the next boot.
+
+None of this applies to an installed machine, where `/etc` has always been on
+the disk.
+
+### Changing your password
+
+The **Change password** button in **Settings → Accounts** opens a terminal
+running `passwd`. On a
+stick with a persistence volume the new password is written to the volume a few
+seconds later, on its own.
+
+This used to happen only when the machine shut down cleanly, so a stick that
+lost power came back wanting the old password — the one thing the saved account
+exists to prevent. It now happens whatever changed the password, because what is
+watched is the password file itself rather than any one command.
+
+The change itself is untouched: the saving is a separate step that reacts
+afterwards and cannot delay or fail a password change. On *Maximum* nothing is
+written, as everywhere else.
+
+### Administrators
+
+**Settings → Accounts** can grant and revoke administrator. Doing so now also
+updates which account VoidOS asks for when you change the privacy level — before,
+that could go on naming someone who was no longer an administrator, whose
+password would still authorise a change and whose account could not be deleted.
+
+**Revoking the only administrator is refused.** Nothing would be left that could
+authorise a change afterwards, including changing it back. Make someone else an
+administrator first.
+
+**Every account is remembered, not just the one you set up first.** On a stick
+with a persistence volume the saved record holds all of your accounts, so adding
+a second account, promoting it and demoting the first all come back correctly at
+the next boot. If a machine ever did reach a boot with no administrator at all,
+VoidOS gives administrator back to the account you created first and says so,
+rather than leaving a stick that can authorise nothing — so you cannot lock
+yourself out this way.
+
+---
+
 ## Installing VoidOS onto another drive
 
 You do not need the live USB to install VoidOS again. From the system you are
@@ -777,7 +923,8 @@ the system itself, and every command in it can explain itself:
 | `voidos version` | The version you are running |
 
 `void` is a shorter name for the same thing, so `void help` and
-`voidos help` are identical.
+`voidos help` are identical. There is also a plain reference of the commands you
+are likely to type in [commands.md](commands.md).
 
 Each command's help says what it does, every option it accepts, every file it
 reads or writes, and what each exit code means. Commands that are not meant to
@@ -785,6 +932,11 @@ be typed — the ones VoidOS starts for itself — say so, and say what starts t
 
 Asking for help never does anything: it prints and exits, so it is safe on any
 command whatever, including the ones that erase disks.
+
+**A command that fails tells you why.** Give one an argument it cannot use, or
+leave out one it needs, and it says exactly what was wrong — not a wall of help
+text. The full help appears only when the command name itself is not one VoidOS
+knows.
 
 ### Applications you can open
 
@@ -821,6 +973,20 @@ command whatever, including the ones that erase disks.
 | `voidos-theme accent '#b79ced'` | Set the accent colour immediately |
 
 ### Updates and recovery
+
+Updating from 0.9.3.10 to 0.9.3.11 is an ordinary update: it is staged on the
+disk rather than in memory, and it carries its own kernel and startup image, so
+there is nothing to do beyond **Settings → Update → Check now → Install** and a
+restart.
+
+Two things the updater says differently since 0.9.3.11. It now names the
+temporary `.new` and `.prev` copies it clears out of `/boot` after a good boot,
+in `/boot/voidos-update.log`, instead of removing them silently — so being told
+"the previous kernel is kept as `.prev`" and later finding it gone is no longer
+a mystery. And `void-update status`, after you roll back an update that was
+staged but never started, says the boot menu points at the slot already running
+and the next start changes nothing, rather than reporting a pending update that
+would fall back to itself.
 
 | Command | Does |
 |---|---|
