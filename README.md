@@ -64,9 +64,9 @@ Tor bridges from Settings, and one power-button dialog.
   → Tor** shows what Tor is doing right now, read from Tor itself, and lets you
   pick one of the built-in bridge sets (obfs4, Snowflake, meek-azure) or paste
   bridge lines you were given. A bridge changes how you *reach* Tor, never what
-  it protects. When Tor is stuck on a working network, VoidOS tells you where to go
-  (the alert's own button does not open the page yet, a known gap); the first-run
-  setup offers the same help if Tor cannot connect while it installs your apps. The administrator password is remembered for bridge
+  it protects. When Tor is stuck on a working network, VoidOS tells you and opens
+  that page from the alert; the first-run setup offers the same help if Tor
+  cannot connect while it installs your apps. The administrator password is remembered for bridge
   changes for ten minutes. [Tor bridges](USING.md#tor-bridges)
 - **Waits on Tor are measured, not guessed.** Every step that waits for Tor keeps
   waiting while progress is being made and gives up only after two minutes
