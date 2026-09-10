@@ -27,6 +27,12 @@ want.
   - [Two kinds of tool](#two-kinds-of-tool)
   - [What is checked before anything is installed](#what-is-checked-before-anything-is-installed)
   - [Using your own tool channel](#using-your-own-tool-channel)
+- [Tor bridges](#tor-bridges)
+  - [When you need one](#when-you-need-one)
+  - [Turning one on](#turning-one-on)
+  - [Using bridges someone gave you](#using-bridges-someone-gave-you)
+  - [Getting bridges when you cannot reach the internet](#getting-bridges-when-you-cannot-reach-the-internet)
+  - [What is kept, and where](#what-is-kept-and-where)
 - [Memory and scratch space](#memory-and-scratch-space)
   - [The scratch tier](#the-scratch-tier)
   - [How much memory a live stick needs](#how-much-memory-a-live-stick-needs)
@@ -366,6 +372,117 @@ itself, so nothing inside needs editing to move it somewhere else.
 
 If the file is missing, VoidOS uses its built-in default — so an older VoidOS
 that has never heard of this file still works.
+
+---
+
+## Tor bridges
+
+On the Secure and Maximum privacy levels, everything this machine sends goes
+through Tor. Tor reaches the network through a *relay*, and the addresses of
+Tor's ordinary relays are published — anyone can look them up, which means a
+network can also refuse them. Some hotel, campus, workplace and country networks
+do exactly that.
+
+A **bridge** is a Tor relay that is not on that public list, so a network that
+blocks the published relays cannot block it by looking it up.
+
+A bridge does not change what Tor protects. It changes how you reach it.
+
+### When you need one
+
+You need a bridge when **Tor stalls below 100% on a network that is otherwise
+working** — pages load for other devices on the same Wi-Fi, but VoidOS sits at
+10% or 25% and stays there.
+
+You do **not** need one when:
+
+- Tor is simply still starting. A first connection often takes a minute or two.
+- The clock is wrong. VoidOS says so if it is, and corrects it by itself. A
+  bridge will not help with that and the message will tell you so.
+- Nothing on the network works. Fix the network first.
+
+Setup offers a bridge in two places, so you do not have to know any of this in
+advance: on the network step, and on the applications step if the downloads sit
+still because Tor cannot get out. Setup can always be skipped — you can set a
+bridge afterwards, and nothing else about setup depends on it.
+
+### Turning one on
+
+**Settings → Network & internet → Tor.**
+
+The page shows what Tor is doing right now — a percentage and Tor's own words
+for the step it is on — so you can see whether a bridge changed anything.
+
+Under **Use a bridge** is a list:
+
+| Choice | What it is |
+|---|---|
+| None | No bridge. Tor uses the ordinary published relays. |
+| obfs4 (built-in) | Makes the traffic look like nothing in particular. Try this first. |
+| Snowflake (built-in) | Goes through volunteers' browsers. Slower to start, hard to block. |
+| meek-azure (built-in) | Makes the traffic look like an ordinary visit to a large cloud service. Slow, and worth trying when nothing else gets through. |
+| WebTunnel (built-in) | Makes the traffic look like ordinary web browsing. |
+| Custom… | Bridge lines you were given. See below. |
+
+Pick one and press **Apply**. Nothing is typed for the built-in choices — VoidOS
+ships the same lists Tor Browser offers. Watch the status above: if the
+percentage starts moving again, it worked. If it does not, try the next
+transport in the table; they fail differently on different networks, and
+"nothing works" usually means "not this one".
+
+To stop using a bridge, choose **None** and press **Apply**.
+
+The built-in lists are public, which is exactly why they are worth trying first —
+and also the reason a network that has been configured to block Tor thoroughly
+may block them too. That is when you want your own.
+
+### Using bridges someone gave you
+
+Choose **Custom…**, paste the lines into **Bridge lines**, and press Apply
+(Ctrl+Enter does the same). A line looks like this:
+
+```
+obfs4 192.0.2.10:9443 0123456789ABCDEF0123456789ABCDEF01234567 cert=… iat-mode=0
+```
+
+- Paste up to 8 lines, and they must all be the same kind.
+- A leading `Bridge ` is fine — lines copied off a web page usually have it, and
+  it is ignored.
+- The page checks each line as you type and says which line and which part is
+  wrong, before anything is saved.
+
+While your own bridge is in use, the built-in choices are greyed out: switching
+to one would throw away the lines you pasted. Clear the box and press Apply to
+get them back.
+
+### Getting bridges when you cannot reach the internet
+
+This is the awkward part, and it is awkward by design: if a bridge address were
+easy to get, it would be easy to block. All of these can be done from a phone or
+another computer, and none of them needs VoidOS.
+
+- **<https://bridges.torproject.org>** — on any other device. Ask for `obfs4`,
+  and copy the lines it gives you.
+- **Telegram** — message `@GetBridgesBot` and send `/bridges`.
+- **Email** — send a message to `bridges@torproject.org` with `get transport
+  obfs4` in the body. It only answers Gmail and Riseup addresses.
+
+Then type or paste the lines into **Custom…** as above.
+
+### What is kept, and where
+
+| Where you are running | What happens to the bridge you set |
+|---|---|
+| Installed on a disk | Kept. Used again at every boot. |
+| Live stick with persistence | Kept on the persistence volume, and used again the next time you boot that stick. |
+| Live stick without persistence | Used for this session. Gone at shutdown, like everything else. |
+| Maximum | **This session only**, on every kind of machine. Maximum reads no stored settings at all, on purpose — so a bridge set on Maximum lasts until you shut down and has to be set again next time. |
+
+The page tells you which of these applies while you are looking at it.
+
+**After a rollback.** If you put the system back to a version older than
+0.9.3.15, a saved bridge is ignored: that version has no idea the setting
+exists. Nothing is lost — updating forward again picks it up.
 
 ---
 
@@ -974,7 +1091,7 @@ knows.
 
 ### Updates and recovery
 
-Updating from 0.9.3.10 to 0.9.3.11 is an ordinary update: it is staged on the
+Updating from 0.9.3.11 to 0.9.3.15, or from 0.9.3.10, is an ordinary update: it is staged on the
 disk rather than in memory, and it carries its own kernel and startup image, so
 there is nothing to do beyond **Settings → Update → Check now → Install** and a
 restart.

@@ -7,7 +7,7 @@ including a one-click switch that sends everything you do through the Tor
 network. You choose how private you want to be, and you can change your mind at
 any time without reinstalling.
 
-**Latest version: 0.9.3.11** —
+**Latest version: 0.9.3.15** —
 [Download](https://github.com/ChaotixG/Void-Os/releases/latest)
 
 ---
@@ -15,6 +15,7 @@ any time without reinstalling.
 ## Contents
 
 - [Who it's for](#who-its-for)
+- [New in 0.9.3.15](#new-in-09315)
 - [New in 0.9.3.11](#new-in-09311)
 - [New in 0.9.3.10](#new-in-09310)
 - [What's included](#whats-included)
@@ -52,6 +53,34 @@ follow four steps with a USB stick, you can run VoidOS.
 It is a good fit if you want to browse without being tracked, keep your files
 encrypted, or work on something sensitive. It is also fine as an everyday
 machine — you can watch video, play music, write documents and browse the web.
+
+---
+
+## New in 0.9.3.15
+
+Tor bridges from Settings, and one power-button dialog.
+
+- **Use a bridge when your network blocks Tor.** **Settings → Network & internet
+  → Tor** shows what Tor is doing right now, read from Tor itself, and lets you
+  pick one of the built-in bridge sets (obfs4, Snowflake, meek-azure) or paste
+  bridge lines you were given. A bridge changes how you *reach* Tor, never what
+  it protects. When Tor is stuck on a working network, VoidOS tells you where to go
+  (the alert's own button does not open the page yet, a known gap); the first-run
+  setup offers the same help if Tor cannot connect while it installs your apps. The administrator password is remembered for bridge
+  changes for ten minutes. [Tor bridges](USING.md#tor-bridges)
+- **Waits on Tor are measured, not guessed.** Every step that waits for Tor keeps
+  waiting while progress is being made and gives up only after two minutes
+  without any, saying so; downloads are never cut off by a total limit. The
+  numbers come from timing Tor's bootstrap and first fetches, direct and through
+  each bridge set.
+- **Authorisation rules load.** The rules that decide who may run VoidOS's
+  privileged helpers had shipped in a folder the authorisation service could not
+  read, so it fell back to its built-in default. They load now.
+- **Settings has room again on smaller screens.** Every Settings page had been
+  squeezed to a third of the window by the search list; pages now get the space.
+- **One power-button dialog.** Pressing the button several times opened the
+  shutdown dialog several times; it opens once, a second press restarts its
+  countdown, and Escape closes it.
 
 ---
 
@@ -278,19 +307,19 @@ checks it for you and just tells you whether it passed.
 **Linux**
 
 ```sh
-sha256sum -c voidOS-x86_64-lean-0.9.3.11.iso.sha256
+sha256sum -c voidOS-x86_64-lean-0.9.3.15.iso.sha256
 ```
 
 **macOS**
 
 ```sh
-shasum -a 256 -c voidOS-x86_64-lean-0.9.3.11.iso.sha256
+shasum -a 256 -c voidOS-x86_64-lean-0.9.3.15.iso.sha256
 ```
 
 **Windows** — open PowerShell in that folder and paste both lines:
 
 ```powershell
-$f = "voidOS-x86_64-lean-0.9.3.11.iso"
+$f = "voidOS-x86_64-lean-0.9.3.15.iso"
 if ((Get-FileHash $f -Algorithm SHA256).Hash -eq (Get-Content "$f.sha256").Split(" ")[0]) { "OK" } else { "FAILED" }
 ```
 
@@ -623,7 +652,6 @@ Rough order, not fixed dates. Things move when something turns out to matter mor
 
 | Version | What it brings |
 |---|---|
-| **0.9.3.15** | Tor connection settings — bridges and transports, so Tor works on networks that block it |
 | **0.9.4** | Housekeeping and cleanup |
 | **0.9.10** | Apps — browse, install and manage applications, in one place |
 | **0.9.20** | Firewall — decide what each application is allowed to reach |
